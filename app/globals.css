@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.topbar{
+    background-color: #6e0000;
+}
+
+.footer{
+    background-color: #6e0000;
+    color: white;
+}
+
+.active:hover {
+    background-color: black;
+}
