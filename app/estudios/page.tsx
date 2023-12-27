@@ -1,5 +1,12 @@
+import TopBar from "../TopBar";
+
 const Estudios = () => {
-    return <h1>Estudios</h1>
+    return (
+        <>
+            <TopBar />
+            <h1>Estudios</h1>
+        </>
+    )
 }
 
 export default Estudios;

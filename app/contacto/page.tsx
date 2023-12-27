@@ -1,5 +1,12 @@
-const Contacto = ()=>{
-    return <h1>Contacto</h1>
+import TopBar from "../TopBar";
+
+const Contacto = () => {
+    return (
+        <>
+            <TopBar />
+            <h1>Contacto</h1>
+        </>
+    )
 }
 
 export default Contacto;

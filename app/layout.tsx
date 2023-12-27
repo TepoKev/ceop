@@ -3,9 +3,9 @@ import { Roboto } from 'next/font/google'
 import TopBar from './TopBar'
 import Footer from './Footer'
 
-import './globals.css'
-
 const roboto = Roboto({ weight: '400', subsets: ['latin'], style: "normal" })
+
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Centro de Estudios de Opinión Pública - CEOP',
@@ -19,8 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={roboto.className}>
-        <TopBar />
+      <body>
         {children}
         <Footer />
       </body>
