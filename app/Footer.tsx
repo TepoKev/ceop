@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 const Footer = () => {
     return (
-        <footer className="footer flex flex-col items-center mx-auto w-full max-w-screen-xl py-6">
+        <footer className="footer flex flex-col items-center mx-auto w-full py-6">
             {/*Social Media*/}
             <div className='flex flex-row items-center'>
                 <Link href={"https://www.facebook.com/ceopfmp"} className='m-3' target="_blank">
