@@ -13,8 +13,8 @@ async function hashPassword(password: string) {
     };
 }
 
-async function isPasswordCorrect(savedHash: Buffer, savedSalt: string, passwordAttempt: string) {
-    var hashAttempt = await crypto.pbkdf2Sync(passwordAttempt, savedSalt, iterations, 128, 'sha512');
+async function isPasswordCorrect(savedHash: String, savedSalt: string, passwordAttempt: string) {
+    var hashAttempt = await crypto.pbkdf2Sync(passwordAttempt, savedSalt, iterations, 128, 'sha512').toString('base64');
     return savedHash == hashAttempt;
 }
 

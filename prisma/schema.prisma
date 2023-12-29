@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model images {
+  uuid                               Unsupported("uuid") @id
+  name                               String              @db.VarChar(512)
+  userUuid                           Unsupported("uuid")
+  creationDate                       DateTime            @db.DateTime(0)
+  users_images_userUuidTousers       users               @relation("images_userUuidTousers", fields: [userUuid], references: [uuid], onUpdate: Restrict, map: "images_FK")
+  studies                            studies[]
+  users_users_imgProfileUuidToimages users[]             @relation("users_imgProfileUuidToimages")
+
+  @@index([userUuid], map: "images_FK")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model roles {
+  uuid                                Unsupported("uuid")  @id
+  name                                String               @db.VarChar(100)
+  creationUserUuid                    Unsupported("uuid")?
+  creationDate                        DateTime             @db.DateTime(0)
+  users_roles_creationUserUuidTousers users?               @relation("roles_creationUserUuidTousers", fields: [creationUserUuid], references: [uuid], onDelete: Restrict, onUpdate: Restrict, map: "roles_FK")
+  users_users_roleUuidToroles         users[]              @relation("users_roleUuidToroles")
+
+  @@index([creationUserUuid], map: "roles_FK")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model studies {
+  uuid         Unsupported("uuid") @id
+  title        String              @db.VarChar(1000)
+  description  String              @db.VarChar(1000)
+  keywords     String?             @db.VarChar(500)
+  userUuid     Unsupported("uuid")
+  pdfPath      String?             @db.VarChar(500)
+  imgUuid      Unsupported("uuid")
+  creationDate DateTime            @db.DateTime(0)
+  users        users               @relation(fields: [uuid], references: [uuid], onUpdate: Restrict, map: "studies_FK")
+  images       images              @relation(fields: [imgUuid], references: [uuid], onUpdate: Restrict, map: "studies_FK_1")
+
+  @@index([imgUuid], map: "studies_FK_1")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model users {
+  uuid                                Unsupported("uuid")  @id
+  firstName                           String               @db.VarChar(250)
+  lastName                            String               @db.VarChar(250)
+  email                               String               @db.VarChar(250)
+  phone                               String?              @db.VarChar(9)
+  password                            String               @db.VarChar(172)
+  salt                                String               @db.VarChar(172)
+  creationDate                        DateTime             @db.DateTime(0)
+  roleUuid                            Unsupported("uuid")?
+  imgProfileUuid                      Unsupported("uuid")?
+  images_images_userUuidTousers       images[]             @relation("images_userUuidTousers")
+  roles_roles_creationUserUuidTousers roles[]              @relation("roles_creationUserUuidTousers")
+  studies                             studies?
+  images_users_imgProfileUuidToimages images?              @relation("users_imgProfileUuidToimages", fields: [imgProfileUuid], references: [uuid], onDelete: Restrict, onUpdate: Restrict, map: "users_FK")
+  roles_users_roleUuidToroles         roles?               @relation("users_roleUuidToroles", fields: [roleUuid], references: [uuid], onDelete: Restrict, onUpdate: Restrict, map: "users_FK_1")
+
+  @@index([imgProfileUuid], map: "users_FK")
+  @@index([roleUuid], map: "users_FK_1")
+  @@ignore
+}
