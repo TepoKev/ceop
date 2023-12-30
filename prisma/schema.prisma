@@ -9,67 +9,68 @@ datasource db {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model images {
-  uuid                               Unsupported("uuid") @id
-  name                               String              @db.VarChar(512)
-  userUuid                           Unsupported("uuid")
-  creationDate                       DateTime            @db.DateTime(0)
-  users_images_userUuidTousers       users               @relation("images_userUuidTousers", fields: [userUuid], references: [uuid], onUpdate: Restrict, map: "images_FK")
-  studies                            studies[]
-  users_users_imgProfileUuidToimages users[]             @relation("users_imgProfileUuidToimages")
+  id                               Int       @id @default(autoincrement())
+  name                             String    @db.VarChar(512)
+  userId                           Int       @db.Int
+  user                             users     @relation(fields: [userId], references: [id])
+  createAt                         DateTime  @db.DateTime(0)
+  updateAt                         DateTime  @db.DateTime(0)
+  studies                          studies[]
+  users_users_imgProfileIdToimages users[]   @relation("users_imgProfileIdToimages")
+  usersId                          Int?
 
-  @@index([userUuid], map: "images_FK")
-  @@ignore
+  @@index([id], map: "images_FK")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model roles {
-  uuid                                Unsupported("uuid")  @id
-  name                                String               @db.VarChar(100)
-  creationUserUuid                    Unsupported("uuid")?
-  creationDate                        DateTime             @db.DateTime(0)
-  users_roles_creationUserUuidTousers users?               @relation("roles_creationUserUuidTousers", fields: [creationUserUuid], references: [uuid], onDelete: Restrict, onUpdate: Restrict, map: "roles_FK")
-  users_users_roleUuidToroles         users[]              @relation("users_roleUuidToroles")
+  id                                Int      @id @default(autoincrement())
+  name                              String   @db.VarChar(100)
+  creationUserId                    Int      @db.Int
+  createAt                          DateTime @db.DateTime(0)
+  updateAt                          DateTime @db.DateTime(0)
+  users_roles_creationUserIdTousers users?   @relation("roles_creationUserIdTousers", fields: [creationUserId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "roles_FK")
+  users_users_roleIdToroles         users[]  @relation("users_roleIdToroles")
 
-  @@index([creationUserUuid], map: "roles_FK")
-  @@ignore
+  @@index([creationUserId], map: "roles_FK")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model studies {
-  uuid         Unsupported("uuid") @id
-  title        String              @db.VarChar(1000)
-  description  String              @db.VarChar(1000)
-  keywords     String?             @db.VarChar(500)
-  userUuid     Unsupported("uuid")
-  pdfPath      String?             @db.VarChar(500)
-  imgUuid      Unsupported("uuid")
-  creationDate DateTime            @db.DateTime(0)
-  users        users               @relation(fields: [uuid], references: [uuid], onUpdate: Restrict, map: "studies_FK")
-  images       images              @relation(fields: [imgUuid], references: [uuid], onUpdate: Restrict, map: "studies_FK_1")
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(1000)
+  description String   @db.VarChar(1000)
+  keywords    String?  @db.VarChar(500)
+  userId      Int      @db.Int
+  pdfPath     String?  @db.VarChar(500)
+  imgId       Int      @db.Int
+  createAt    DateTime @db.DateTime(0)
+  updateAt    DateTime @db.DateTime(0)
+  users       users    @relation(fields: [id], references: [id], onUpdate: Restrict, map: "studies_FK")
+  images      images   @relation(fields: [imgId], references: [id], onUpdate: Restrict, map: "studies_FK_1")
 
-  @@index([imgUuid], map: "studies_FK_1")
-  @@ignore
+  @@index([imgId], map: "studies_FK_1")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model users {
-  uuid                                Unsupported("uuid")  @id
-  firstName                           String               @db.VarChar(250)
-  lastName                            String               @db.VarChar(250)
-  email                               String               @db.VarChar(250)
-  phone                               String?              @db.VarChar(9)
-  password                            String               @db.VarChar(172)
-  salt                                String               @db.VarChar(172)
-  creationDate                        DateTime             @db.DateTime(0)
-  roleUuid                            Unsupported("uuid")?
-  imgProfileUuid                      Unsupported("uuid")?
-  images_images_userUuidTousers       images[]             @relation("images_userUuidTousers")
-  roles_roles_creationUserUuidTousers roles[]              @relation("roles_creationUserUuidTousers")
-  studies                             studies?
-  images_users_imgProfileUuidToimages images?              @relation("users_imgProfileUuidToimages", fields: [imgProfileUuid], references: [uuid], onDelete: Restrict, onUpdate: Restrict, map: "users_FK")
-  roles_users_roleUuidToroles         roles?               @relation("users_roleUuidToroles", fields: [roleUuid], references: [uuid], onDelete: Restrict, onUpdate: Restrict, map: "users_FK_1")
+  id                                Int      @id @default(autoincrement())
+  firstName                         String   @db.VarChar(250)
+  lastName                          String   @db.VarChar(250)
+  email                             String   @db.VarChar(250)
+  phone                             String?  @db.VarChar(9)
+  password                          String   @db.VarChar(172)
+  salt                              String   @db.VarChar(172)
+  createAt                          DateTime @db.DateTime(0)
+  updateAt                          DateTime @db.DateTime(0)
+  roleId                            Int
+  imgProfileId                      Int
+  roles_roles_creationUserIdTousers roles[]  @relation("roles_creationUserIdTousers")
+  studies                           studies?
+  images_users_imgProfileIdToimages images?  @relation("users_imgProfileIdToimages", fields: [imgProfileId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "users_FK")
+  roles_users_roleIdToroles         roles?   @relation("users_roleIdToroles", fields: [roleId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "users_FK_1")
+  images                            images[]
 
-  @@index([imgProfileUuid], map: "users_FK")
-  @@index([roleUuid], map: "users_FK_1")
-  @@ignore
+  @@index([imgProfileId], map: "users_FK")
+  @@index([roleId], map: "users_FK_1")
 }

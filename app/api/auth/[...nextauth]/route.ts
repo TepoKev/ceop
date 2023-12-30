@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import db from "../../../../libs/db";
 
 const authOptions = {
   providers: [
@@ -7,10 +8,20 @@ const authOptions = {
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email", placeholder: "jsmith" },
-        password: { label: "Password", type: "password", placeholder: "********" },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "********",
+        },
       },
-      authorize(credentials, req) {
+      async authorize(credentials: any, req) {
         console.log(credentials);
+        const userFound = await db.users.findUnique({
+          where: {
+            email: credentials.email,
+          },
+        });
+        console.log(userFound);
         return null;
       },
     }),
@@ -19,4 +30,4 @@ const authOptions = {
 
 const handler = NextAuth(authOptions);
 
-export {handler as GET, handler as POST}
+export { handler as GET, handler as POST };
