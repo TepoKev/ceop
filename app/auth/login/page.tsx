@@ -3,17 +3,34 @@ import Link from "next/link";
 import TopBar from "../../TopBar";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const login = () => {
   const [rememberMe, setRememberMe] = useState(false);
+  const [invalidCredentials, setInvalidCredentials] = useState<string | null>(
+    null
+  );
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const router = useRouter();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = handleSubmit(async ({ email, password }) => {
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+    if (result) {
+      if (!result.ok) {
+        setInvalidCredentials(result.error);
+      } else {
+        router.push("/auth/dashboard");
+      }
+    }
   });
 
   const handlerRememberMe = (
@@ -50,6 +67,13 @@ const login = () => {
                 action="#"
                 onSubmit={onSubmit}
               >
+                <div>
+                  {invalidCredentials && (
+                    <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                      {invalidCredentials}
+                    </span>
+                  )}
+                </div>
                 <div>
                   <label
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"

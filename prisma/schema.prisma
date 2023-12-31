@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model images {
   id                               Int       @id @default(autoincrement())
   name                             String    @db.VarChar(512)
@@ -17,16 +16,14 @@ model images {
   updateAt                         DateTime  @db.DateTime(0)
   studies                          studies[]
   users_users_imgProfileIdToimages users[]   @relation("users_imgProfileIdToimages")
-  usersId                          Int?
 
   @@index([id], map: "images_FK")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model roles {
   id                                Int      @id @default(autoincrement())
   name                              String   @db.VarChar(100)
-  creationUserId                    Int      @db.Int
+  creationUserId                    Int?      @db.Int
   createAt                          DateTime @db.DateTime(0)
   updateAt                          DateTime @db.DateTime(0)
   users_roles_creationUserIdTousers users?   @relation("roles_creationUserIdTousers", fields: [creationUserId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "roles_FK")
@@ -35,7 +32,6 @@ model roles {
   @@index([creationUserId], map: "roles_FK")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model studies {
   id          Int      @id @default(autoincrement())
   title       String   @db.VarChar(1000)
@@ -46,13 +42,13 @@ model studies {
   imgId       Int      @db.Int
   createAt    DateTime @db.DateTime(0)
   updateAt    DateTime @db.DateTime(0)
-  users       users    @relation(fields: [id], references: [id], onUpdate: Restrict, map: "studies_FK")
+  users       users    @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "studies_FK")
   images      images   @relation(fields: [imgId], references: [id], onUpdate: Restrict, map: "studies_FK_1")
 
+  @@index([userId], map: "studies_FK")
   @@index([imgId], map: "studies_FK_1")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model users {
   id                                Int      @id @default(autoincrement())
   firstName                         String   @db.VarChar(250)
@@ -64,9 +60,9 @@ model users {
   createAt                          DateTime @db.DateTime(0)
   updateAt                          DateTime @db.DateTime(0)
   roleId                            Int
-  imgProfileId                      Int
+  imgProfileId                      Int?
   roles_roles_creationUserIdTousers roles[]  @relation("roles_creationUserIdTousers")
-  studies                           studies?
+  studies                           studies[]
   images_users_imgProfileIdToimages images?  @relation("users_imgProfileIdToimages", fields: [imgProfileId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "users_FK")
   roles_users_roleIdToroles         roles?   @relation("users_roleIdToroles", fields: [roleId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "users_FK_1")
   images                            images[]
