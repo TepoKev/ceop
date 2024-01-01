@@ -95,7 +95,7 @@ const login = () => {
                   />
                   {errors.email && (
                     <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-                      {errors.email.message}
+                      {errors.email.message + ''}
                     </span>
                   )}
                 </div>
@@ -123,7 +123,7 @@ const login = () => {
                   <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                     {errors.password && (
                       <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-                        {errors.password.message}
+                        {errors.password.message + ''}
                       </span>
                     )}
                   </span>
@@ -142,7 +142,7 @@ const login = () => {
                     </div>
                     <div className="ml-3 text-sm">
                       <label className="text-gray-500 dark:text-gray-300">
-                        Recuerdame
+                        Recuérdeme
                       </label>
                     </div>
                   </div>
