@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { redirect } from 'next/navigation'
+
 
 function NuevoEstudio() {
   const {
@@ -10,10 +12,24 @@ function NuevoEstudio() {
   } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
+    const form = new FormData();
+    form.append("title", data.title);
+    form.append("description", data.description);
+    form.append("keywords", data.keywords);
+    form.append("studyImage", data.studyImage[0]);
+    form.append("studyPdf", data.studyPdf[0]);
+    const response = await fetch("http://localhost:3000/api/auth/register/estudio", {
+      method: "POST",
+      body: form,
+    });
+    if (response.ok) {
+      //redirect("/auth/dashboard/estudios");
+    } else {
+      alert("Error al crear el estudio");
+    }
   });
   return (
-    <div>
+    <div className="flex justify-center">
       <form className="max-w-lg m-3" onSubmit={onSubmit}>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -105,15 +121,11 @@ function NuevoEstudio() {
               Imagen del estudio
             </label>
             <input
+              className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-50`}
               id="studyImage"
               type="file"
-              onChange={(e) => {
-                console.log(e.target);
-              }}
+              {...register("studyImage")}
             />
-            <p className="text-gray-600 text-xs italic">
-              Make it as long and as crazy as you'd like
-            </p>
           </div>
         </div>
         <div className="flex flex-wrap -mx-3 mb-6">
@@ -124,21 +136,33 @@ function NuevoEstudio() {
             >
               PDF del estudio
             </label>
-            <input id="studyPdf" type="file" />
-            <p className="text-gray-600 text-xs italic">
-              Make it as long and as crazy as you'd like
-            </p>
+            <input
+              className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${
+                errors.studyPdf?.message && "border-red-500"
+              }`}
+              id="studyPdf"
+              type="file"
+              {...register("studyPdf", {
+                required: {
+                  value: true,
+                  message: "Se requiere del PDF que avale el estudio!",
+                },
+              })}
+            />
+            {errors.studyPdf?.message && (
+              <p className="text-red-500 text-xs italic">
+                {errors.studyPdf?.message + ""}
+              </p>
+            )}
           </div>
         </div>
-        <div className="flex flex-wrap -mx-3 mb-2">
-          <div className="w-full flex justify-center md:w-1/3 px-3 mb-6 md:mb-0">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-            >
-              Crear estudio
-            </button>
-          </div>
+        <div className="flex justify-center w-full px-3 mb-6 md:mb-0">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          >
+            Crear estudio
+          </button>
         </div>
       </form>
     </div>
