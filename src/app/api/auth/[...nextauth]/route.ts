@@ -1,8 +1,7 @@
-import NextAuth from "next-auth";
+import NextAuth, { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import db from "../../../../libs/db";
 import { isPasswordCorrect } from "../../../../util/encrypt";
-import { pages } from "next/dist/build/templates/app-page";
 
 const authOptions = {
   providers: [
@@ -16,7 +15,7 @@ const authOptions = {
           placeholder: "********",
         },
       },
-      async authorize(credentials) {
+      async authorize(credentials): Promise<User | null> {
         const { email, password } = credentials as {
           email: string;
           password: string;
@@ -38,7 +37,7 @@ const authOptions = {
           throw new Error("Contraseña incorrecta");
         }
         return {
-          id: userFound.id,
+          id: userFound.id.toString(),
           email: userFound.email,
           name: userFound.firstName + " " + userFound.lastName,
         };

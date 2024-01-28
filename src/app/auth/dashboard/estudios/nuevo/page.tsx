@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { redirect } from 'next/navigation'
-
 
 function NuevoEstudio() {
   const {
@@ -18,10 +16,13 @@ function NuevoEstudio() {
     form.append("keywords", data.keywords);
     form.append("studyImage", data.studyImage[0]);
     form.append("studyPdf", data.studyPdf[0]);
-    const response = await fetch("http://localhost:3000/api/auth/register/estudio", {
-      method: "POST",
-      body: form,
-    });
+    const response = await fetch(
+      "http://localhost:3000/api/auth/register/estudio",
+      {
+        method: "POST",
+        body: form,
+      }
+    );
     if (response.ok) {
       //redirect("/auth/dashboard/estudios");
     } else {
@@ -124,6 +125,7 @@ function NuevoEstudio() {
               className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-50`}
               id="studyImage"
               type="file"
+              accept="image/png, image/gif, image/jpeg, image/jpg"
               {...register("studyImage")}
             />
           </div>
@@ -142,6 +144,7 @@ function NuevoEstudio() {
               }`}
               id="studyPdf"
               type="file"
+              accept="application/pdf"
               {...register("studyPdf", {
                 required: {
                   value: true,
