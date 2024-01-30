@@ -1,25 +1,28 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function PreviewArticle({
   title,
   description,
   image,
   tags,
+  pdf
 }: {
   title: string;
   description: string;
   image: string;
   tags: string[];
+  pdf: string;
 }) {
   return (
     <div className="rounded overflow-hidden shadow-lg my-2 sm:m-3">
-      <div className="flex justify-center w-full">
+      <div className="flex justify-center">
         <Image
-          className="w-full sm:w-48 "
+          className="rounded-sm"
           src={image}
           alt="Sunset in the mountains"
-          width="100"
-          height="100"
+          width="700"
+          height="700"
         />
       </div>
       <div className="px-6 py-4">
@@ -36,9 +39,9 @@ export default function PreviewArticle({
         })}
       </div>
       <div className="flex justify-center p-6">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Leer más
-        </button>
+        <Link href={pdf} target="_blank" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Descargar PDF
+        </Link>
       </div>
     </div>
   );

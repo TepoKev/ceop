@@ -14,10 +14,11 @@ CREATE TABLE `images` (
 CREATE TABLE `roles` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
-    `creationUserId` INTEGER NOT NULL,
+    `creationUserId` INTEGER NULL,
     `createAt` DATETIME(0) NOT NULL,
     `updateAt` DATETIME(0) NOT NULL,
 
+    UNIQUE INDEX `roles_name_key`(`name`),
     INDEX `roles_FK`(`creationUserId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -29,7 +30,7 @@ CREATE TABLE `studies` (
     `description` VARCHAR(1000) NOT NULL,
     `keywords` VARCHAR(500) NULL,
     `userId` INTEGER NOT NULL,
-    `pdfPath` VARCHAR(500) NULL,
+    `pdfName` VARCHAR(500) NOT NULL,
     `imgId` INTEGER NOT NULL,
     `createAt` DATETIME(0) NOT NULL,
     `updateAt` DATETIME(0) NOT NULL,
@@ -51,8 +52,9 @@ CREATE TABLE `users` (
     `createAt` DATETIME(0) NOT NULL,
     `updateAt` DATETIME(0) NOT NULL,
     `roleId` INTEGER NOT NULL,
-    `imgProfileId` INTEGER NOT NULL,
+    `imgProfileId` INTEGER NULL,
 
+    UNIQUE INDEX `users_email_key`(`email`),
     INDEX `users_FK`(`imgProfileId`),
     INDEX `users_FK_1`(`roleId`),
     PRIMARY KEY (`id`)

@@ -1,6 +1,6 @@
 import { writeFile } from "fs/promises";
 import path from "path";
-import db from "../../../../../libs/db";
+import db from "../../../../libs/db";
 
 export async function POST(request: Request) {
   try {
@@ -36,7 +36,8 @@ export async function POST(request: Request) {
         userId: 1,
       },
     });
-    const study = await db.studies.create({
+    console.log(studyPdfPath);
+    await db.studies.create({
       data: {
         title: title?.toString() as string,
         description: description?.toString() as string,
@@ -45,10 +46,35 @@ export async function POST(request: Request) {
         updateAt: new Date(),
         imgId: image.id,
         userId: 1,
+        pdfName: studyPdf.name,
       },
     });
 
     return Response.json({ message: "register!" });
+  } catch (error) {
+    return Response.error();
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const studies = await db.studies.findMany({
+      include: {
+        images: {
+          select: {
+            name: true,
+          },
+        },
+        users: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      }
+    });
+    return Response.json(studies);
   } catch (error) {
     return Response.error();
   }

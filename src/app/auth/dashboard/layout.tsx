@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -17,7 +17,11 @@ function classNames(...classes: any[]) {
 }
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  const [current, setCurrent] = useState("Dashboard");
+  const [current, setCurrent] = useState("");
+  useEffect(() => {
+    setCurrent(window.location.pathname);
+  }, []);
+  console.log(current);
   return (
     <>
       <Disclosure as="nav" style={{ backgroundColor: "#6e0000" }}>
@@ -56,10 +60,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                           key={item.name}
                           href={item.href}
                           onClick={() => {
-                            setCurrent(item.name);
+                            console.log(item.href);
+                            setCurrent(item.href);
                           }}
                           className={classNames(
-                            current === item.name
+                            current === item.href
                               ? "bg-gray-900 text-white"
                               : "text-gray-300 hover:bg-gray-700 hover:text-white",
                             "rounded-md px-3 py-2 text-sm font-medium"

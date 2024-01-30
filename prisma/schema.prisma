@@ -22,8 +22,8 @@ model images {
 
 model roles {
   id                                Int      @id @default(autoincrement())
-  name                              String   @db.VarChar(100)
-  creationUserId                    Int?      @db.Int
+  name                              String   @unique @db.VarChar(100)
+  creationUserId                    Int?     @db.Int
   createAt                          DateTime @db.DateTime(0)
   updateAt                          DateTime @db.DateTime(0)
   users_roles_creationUserIdTousers users?   @relation("roles_creationUserIdTousers", fields: [creationUserId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "roles_FK")
@@ -33,38 +33,40 @@ model roles {
 }
 
 model studies {
-  id          Int      @id @default(autoincrement())
-  title       String   @db.VarChar(1000)
-  description String   @db.VarChar(1000)
-  keywords    String?  @db.VarChar(500)
-  userId      Int      @db.Int
-  pdfPath     String?  @db.VarChar(500)
-  imgId       Int      @db.Int
-  createAt    DateTime @db.DateTime(0)
-  updateAt    DateTime @db.DateTime(0)
-  users       users    @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "studies_FK")
-  images      images   @relation(fields: [imgId], references: [id], onUpdate: Restrict, map: "studies_FK_1")
+  id           Int      @id @default(autoincrement())
+  title        String   @db.VarChar(1000)
+  description  String   @db.VarChar(1000)
+  keywords     String?  @db.VarChar(500)
+  userId       Int      @db.Int
+  pdfName      String   @db.VarChar(500)
+  imgId        Int      @db.Int
+  publishedAt  DateTime @db.DateTime(0)
+  lastReviewAt DateTime @db.DateTime(0)
+  createAt     DateTime @db.DateTime(0)
+  updateAt     DateTime @db.DateTime(0)
+  users        users    @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "studies_FK")
+  images       images   @relation(fields: [imgId], references: [id], onUpdate: Restrict, map: "studies_FK_1")
 
   @@index([userId], map: "studies_FK")
   @@index([imgId], map: "studies_FK_1")
 }
 
 model users {
-  id                                Int      @id @default(autoincrement())
-  firstName                         String   @db.VarChar(250)
-  lastName                          String   @db.VarChar(250)
-  email                             String   @db.VarChar(250)
-  phone                             String?  @db.VarChar(9)
-  password                          String   @db.VarChar(172)
-  salt                              String   @db.VarChar(172)
-  createAt                          DateTime @db.DateTime(0)
-  updateAt                          DateTime @db.DateTime(0)
+  id                                Int       @id @default(autoincrement())
+  firstName                         String    @db.VarChar(250)
+  lastName                          String    @db.VarChar(250)
+  email                             String    @unique @db.VarChar(250)
+  phone                             String?   @db.VarChar(9)
+  password                          String    @db.VarChar(172)
+  salt                              String    @db.VarChar(172)
+  createAt                          DateTime  @db.DateTime(0)
+  updateAt                          DateTime  @db.DateTime(0)
   roleId                            Int
   imgProfileId                      Int?
-  roles_roles_creationUserIdTousers roles[]  @relation("roles_creationUserIdTousers")
+  roles_roles_creationUserIdTousers roles[]   @relation("roles_creationUserIdTousers")
   studies                           studies[]
-  images_users_imgProfileIdToimages images?  @relation("users_imgProfileIdToimages", fields: [imgProfileId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "users_FK")
-  roles_users_roleIdToroles         roles?   @relation("users_roleIdToroles", fields: [roleId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "users_FK_1")
+  images_users_imgProfileIdToimages images?   @relation("users_imgProfileIdToimages", fields: [imgProfileId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "users_FK")
+  roles_users_roleIdToroles         roles?    @relation("users_roleIdToroles", fields: [roleId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "users_FK_1")
   images                            images[]
 
   @@index([imgProfileId], map: "users_FK")

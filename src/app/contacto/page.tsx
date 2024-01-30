@@ -33,7 +33,7 @@ const Contacto = () => {
               target="_blank"
             >
               <Image
-                src={"/twitter-x-icon.png"}
+                src={"/Twitter_new_X_logo.png"}
                 width={25}
                 height={25}
                 alt="X icon"
