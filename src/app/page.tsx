@@ -7,19 +7,15 @@ async function getData() {
   var studies: Array<any> = [];
   try {
     studies = await db.studies.findMany({
+      where: {
+        highlighted : true
+      },
       include: {
         images: {
           select: {
             name: true,
           },
-        },
-        users: {
-          select: {
-            firstName: true,
-            lastName: true,
-            email: true,
-          },
-        },
+        }
       },
     });
     console.log(studies);
@@ -44,7 +40,7 @@ export default async function Home() {
             <PreviewArticle
               title={study.title}
               description={study.description}
-              tags={study.keywords.split(" ")}
+              tags={study.keywords.split(",")}
               image={process.env.IMG_PATH+study.images.name}
               pdf={process.env.PDF_PATH+study.pdfName}
             />

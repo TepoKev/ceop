@@ -1,35 +1,27 @@
-import React from "react";
+"use client";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import db from "../../../../libs/db";
 
-async function getData() {
-  var studies: Array<any> = [];
-  try {
-    studies = await db.studies.findMany({
-      include: {
-        images: {
-          select: {
-            name: true,
-          },
-        },
-        users: {
-          select: {
-            firstName: true,
-            lastName: true,
-            email: true,
-          },
-        },
-      },
-    });
-    console.log(studies);
-  } catch (error) {
-    console.error(error);
-  }
-  return studies;
+interface Study {
+  title: string;
+  description: string;
+  keywords: string;
 }
 
-async function Estudios() {
-  const studies = await getData();
+function Estudios() {
+  const [studies, setStudies] = useState<Study[]>([]);
+  useEffect(() => {
+    (async () => {
+      const data = await fetch("http://localhost:3000/api/auth/estudio", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => res.json());
+      console.log(data);
+      setStudies(data);
+    })();
+  }, []);
   return (
     <div className="lg:m-3">
       <div className="flex justify-between items-center p-3 flex-col md:flex-row space-y-4 md:space-y-0 pb-4 bg-white">

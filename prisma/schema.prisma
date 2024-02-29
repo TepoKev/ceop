@@ -33,19 +33,21 @@ model roles {
 }
 
 model studies {
-  id           Int      @id @default(autoincrement())
-  title        String   @db.VarChar(1000)
-  description  String   @db.VarChar(1000)
-  keywords     String?  @db.VarChar(500)
-  userId       Int      @db.Int
-  pdfName      String   @db.VarChar(500)
-  imgId        Int      @db.Int
-  publishedAt  DateTime @db.DateTime(0)
-  lastReviewAt DateTime @db.DateTime(0)
-  createAt     DateTime @db.DateTime(0)
-  updateAt     DateTime @db.DateTime(0)
-  users        users    @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "studies_FK")
-  images       images   @relation(fields: [imgId], references: [id], onUpdate: Restrict, map: "studies_FK_1")
+  id           Int       @id @default(autoincrement())
+  title        String    @db.VarChar(1000)
+  description  String    @db.VarChar(1000)
+  keywords     String?   @db.VarChar(500)
+  userId       Int       @db.Int
+  pdfName      String    @db.VarChar(500)
+  imgId        Int       @db.Int
+  active       Boolean   @default(true)
+  highlighted  Boolean   @default(false)
+  publishedAt  DateTime  @db.DateTime(0)
+  lastReviewAt DateTime? @db.DateTime(0)
+  createAt     DateTime  @db.DateTime(0)
+  updateAt     DateTime  @db.DateTime(0)
+  users        users     @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "studies_FK")
+  images       images    @relation(fields: [imgId], references: [id], onUpdate: Restrict, map: "studies_FK_1")
 
   @@index([userId], map: "studies_FK")
   @@index([imgId], map: "studies_FK_1")

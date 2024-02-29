@@ -16,6 +16,16 @@ const QuienesSomos = () => {
               ¿Qué es el CEOP?
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
+              El CEOP (Centro de Estudios de Opinión Pública) es una institución
+              creada por la Junta Directiva de la Facultad Multidisciplinaria
+              Paracentral (FMP) con el objetivo de investigar y analizar la
+              opinión pública en áreas como la educación, economía, agricultura
+              y política. Su propósito es proporcionar información relevante a
+              la sociedad salvadoreña y contribuir a la toma de decisiones en
+              estos ámbitos, tanto a nivel regional (región paracentral) como
+              nacional.
+            </p>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
               Considerando la importancia de contribuir a la comprensión de
               diferentes procesos sociales en la región paracentral y a nivel
               nacional, la Junta Directiva de la FMP ha aprobado según el
