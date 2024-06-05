@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 interface Study {
+  id: number;
   title: string;
   description: string;
   keywords: string;
+  active: boolean;
 }
 
 function Estudios() {
@@ -22,6 +24,9 @@ function Estudios() {
       setStudies(data);
     })();
   }, []);
+  const handleCheckbox = (id: number) => {
+    console.log(id);
+  };
   return (
     <div className="lg:m-3">
       <div className="flex justify-between items-center p-3 flex-col md:flex-row space-y-4 md:space-y-0 pb-4 bg-white">
@@ -90,13 +95,20 @@ function Estudios() {
           <tbody>
             {studies.map((study) => {
               return (
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr
+                  key={study.id}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                >
                   <td className="w-4 p-4">
                     <div className="flex items-center">
                       <input
+                        onChange={() => {
+                          handleCheckbox(study.id);
+                        }}
                         id="checkbox-table-search-1"
                         type="checkbox"
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        checked={study.active ? true : false}
                       />
                       <label
                         htmlFor="checkbox-table-search-1"

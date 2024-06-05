@@ -1,3 +1,5 @@
+'use client'
+import {useState} from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -8,11 +10,8 @@ const navigation = [
     { name: 'Contacto', href: '/contacto' },
 ]
 
-function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(' ')
-}
-
 const TopBar = () => {
+  
     return (
         <nav className="topbar">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">

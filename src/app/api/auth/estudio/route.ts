@@ -6,7 +6,6 @@ import db from "../../../../libs/db";
 export async function POST(request: Request) {
   try {
     const form = await request.formData();
-    console.log(form);
     const title: FormDataEntryValue | null = form.get("title");
     const description: FormDataEntryValue | null = form.get("description");
     const keywords: FormDataEntryValue | null = form.get("keywords");
@@ -54,7 +53,6 @@ export async function POST(request: Request) {
         userId: 1,
       },
     });
-    console.log(active, highlighted);
     await db.studies.create({
       data: {
         title: title?.toString() as string,
